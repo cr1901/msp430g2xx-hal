@@ -7,11 +7,21 @@ edition = "2021"
 
 [dependencies]
 embedded-hal = "1.0.0-alpha.9"
-msp430-rt = { version = "0.4.0", optional = true}
 msp430g2553 = { version = "0.4.0", optional = true }
 msp430g2211 = { version = "0.4.0", optional = true }
 
+[dev-dependencies]
+msp430 = "0.4.0"
+msp430-rt = "0.4.0"
+panic-msp430 = "0.4.0"
+
 [features]
-rt = ["dep:msp430-rt", "msp430g2211?/rt", "msp430g2553?/rt"]
+rt = ["msp430/critical-section-single-core",
+      "msp430g2211?/rt", "msp430g2553?/rt",
+      "msp430g2211?/critical-section", "msp430g2553?/critical-section"]
 msp430g2211 = ["dep:msp430g2211"]
 msp430g2553 = ["dep:msp430g2553"]
+
+[[example]]
+name = "watchdog"
+required-features = ["rt"]

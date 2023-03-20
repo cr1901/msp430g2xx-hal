@@ -1,16 +1,11 @@
 #![no_std]
 
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+pub use embedded_hal as hal;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[cfg(feature = "msp430g2553")]
+pub use msp430g2553 as pac;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+#[cfg(feature = "msp430g2211")]
+pub use msp430g2211 as pac;
+
+pub mod watchdog;

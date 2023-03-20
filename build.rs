@@ -12,18 +12,28 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // Make sure we're only building for one device.
     let mutex_features = vec!["msp430g2553", "msp430g2211"];
-    let device = match mutex_features.iter().filter_map(|t| {
-        env::var(format!(
-            "CARGO_FEATURE_{}",
-            t.to_uppercase().replace('-', "_")
-        )).ok().map(|_| (*t).to_owned())
-    }).collect::<Vec<_>>() {
+    let device = match mutex_features
+        .iter()
+        .filter_map(|t| {
+            env::var(format!(
+                "CARGO_FEATURE_{}",
+                t.to_uppercase().replace('-', "_")
+            ))
+            .ok()
+            .map(|_| (*t).to_owned())
+        })
+        .collect::<Vec<_>>()
+    {
         v if v.len() != 1 => {
             let mut err_str = String::new();
-            write!(&mut err_str, "exactly one of the following features must be set: {}", mutex_features.join(", "))?;
-            return Err(err_str.into())
-        },
-        v => { v[0].clone() }
+            write!(
+                &mut err_str,
+                "exactly one of the following features must be set: {}",
+                mutex_features.join(", ")
+            )?;
+            return Err(err_str.into());
+        }
+        v => v[0].clone(),
     };
 
     // Find the appropriate memory script and copy to `out`. For examples.
