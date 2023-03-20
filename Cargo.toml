@@ -1,0 +1,17 @@
+[package]
+name = "msp430g2xx-hal"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+embedded-hal = "1.0.0-alpha.9"
+msp430-rt = { version = "0.4.0", optional = true}
+msp430g2553 = { version = "0.4.0", optional = true }
+msp430g2211 = { version = "0.4.0", optional = true }
+
+[features]
+rt = ["dep:msp430-rt", "msp430g2211?/rt", "msp430g2553?/rt"]
+msp430g2211 = ["dep:msp430g2211"]
+msp430g2553 = ["dep:msp430g2553"]
